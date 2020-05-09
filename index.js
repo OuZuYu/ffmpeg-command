@@ -69,6 +69,7 @@ function cutVideo(resFile) {
           process.exit(1)
         }
 
+        // 文件名后缀补充
         const suffix = resFile.split('.').pop()
         if (!/\.(mp4|avi|flv|mov|wmv|rm|rmvb)$/i.test(fileName)) {
           fileName = `${fileName}.${suffix}`
@@ -76,11 +77,9 @@ function cutVideo(resFile) {
 
         const videoDuration = metadata.format.duration // 视频总时长
 
-        endTime = endTime || utils.secondsToHms(videoDuration)
-
         const startSecond = utils.hmsToSeconds(startTime)
-        const endSecond = utils.hmsToSeconds(endTime)
-        const cutDuration = (videoDuration - startSecond) - (videoDuration - endSecond)
+        const endSecond = endTime ? utils.hmsToSeconds(endTime) : videoDuration
+        const cutDuration = endSecond - startSecond
 
         const cutDurationHms = utils.secondsToHms(cutDuration)
 
