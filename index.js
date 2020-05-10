@@ -15,8 +15,13 @@ program
 
 program
   .command('2mp4 <res-file>')
-  .description('转Mp4')
+  .description('转为Mp4')
   .action(toMp4)
+
+program
+  .command('2mp3 <res-file>')
+  .description('转为Mp3')
+  .action(toMp3)
 
 program.parse(process.argv)
 
@@ -120,5 +125,18 @@ function toMp4(resFile) {
     }
 
     tip.succeed(`已成功转换视频，输出为 ${outputName}`)
+  })
+}
+
+function toMp3(resFile) {
+  const outputName = `${resFile}.mp3`
+  const tip = ora('正在转换视频为Mp3...\n').start()
+  exec(`ffmpeg -i ${resFile} -vn ${outputName}`, (err, stdout, stderr) => {
+    if (err) {
+      console.log(err)
+      process.exit(1)
+    }
+
+    tip.succeed(`已成功转为mp3，输出为 ${outputName}`)
   })
 }
